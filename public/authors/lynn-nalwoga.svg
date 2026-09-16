@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+  <title>Portrait of Lynn Nalwoga</title>
+  <circle cx="80" cy="80" r="80" fill="#f2c6a0"/>
+  <circle cx="80" cy="62" r="31" fill="#41251e"/>
+  <path d="M42 146c4-31 19-48 38-48s34 17 38 48" fill="#2337ff"/>
+  <circle cx="68" cy="64" r="3" fill="#0f1219"/>
+  <circle cx="92" cy="64" r="3" fill="#0f1219"/>
+  <path d="M70 80c6 5 14 5 20 0" fill="none" stroke="#0f1219" stroke-linecap="round" stroke-width="3"/>
+</svg>
