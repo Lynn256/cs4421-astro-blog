@@ -1,0 +1,85 @@
+---
+import { getEntry } from 'astro:content';
+
+interface Props {
+	authorId: string;
+}
+
+const { authorId } = Astro.props;
+const author = await getEntry('authors', authorId);
+
+if (!author) {
+	throw new Error(`Author profile not found: ${authorId}`);
+}
+
+const { name, avatar, bio, social } = author.data;
+---
+
+<section class="author-bio" aria-labelledby="author-heading">
+	<div class="author-avatar-wrap">
+		<img class="author-avatar" src={avatar} alt={`Portrait of ${name}`} width="96" height="96" />
+	</div>
+	<div class="author-details">
+		<p class="eyebrow">Written by</p>
+		<h2 id="author-heading">{name}</h2>
+		<p>{bio}</p>
+		<nav aria-label={`${name}'s social links`} class="author-links">
+			{social.website && <a href={social.website} rel="me">Website</a>}
+			{social.github && <a href={social.github} rel="me">GitHub</a>}
+			{social.linkedin && <a href={social.linkedin} rel="me">LinkedIn</a>}
+		</nav>
+	</div>
+</section>
+
+<style>
+	.author-bio {
+		display: flex;
+		gap: 1.25rem;
+		align-items: flex-start;
+		margin-top: 3rem;
+		padding-top: 2rem;
+		border-top: 1px solid rgb(var(--gray-light));
+	}
+	.author-avatar-wrap {
+		flex: 0 0 96px;
+	}
+	.author-avatar {
+		display: block;
+		width: 96px;
+		height: 96px;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+	.author-details h2 {
+		margin-bottom: 0.35rem;
+		font-size: 1.5em;
+	}
+	.author-details p {
+		margin: 0 0 0.75rem;
+	}
+	.eyebrow {
+		margin-bottom: 0.25rem !important;
+		color: rgb(var(--gray));
+		font-size: 0.75em;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+	.author-links {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+		font-size: 0.85em;
+	}
+	@media (max-width: 520px) {
+		.author-bio {
+			gap: 1rem;
+		}
+		.author-avatar-wrap,
+		.author-avatar {
+			width: 72px;
+			height: 72px;
+			flex-basis: 72px;
+		}
+	}
+</style>
