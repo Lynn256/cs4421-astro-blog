@@ -1,8 +1,15 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const latestPosts = posts.slice(0, 3);
 ---
 
 <!doctype html>
@@ -13,37 +20,405 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	<body>
 		<Header />
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+			<section class="hero" aria-labelledby="hero-heading">
+				<div class="hero-copy">
+					<p class="eyebrow"><span></span> A journal for the curious</p>
+					<h1 id="hero-heading">The wild is closer than you think.</h1>
+					<p class="hero-description">
+						Slow down, look a little closer, and find a deeper connection with the living world
+						around us.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-primary" href="#field-notes">Explore field notes <span aria-hidden="true">↗</span></a>
+						<a class="text-link" href="/about">Get to know Lynn</a>
+					</div>
+					<p class="hero-note">Small wonders. Open skies. A little more wild in every day.</p>
+				</div>
+				<figure class="hero-image">
+					<img
+						src="https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1200&q=85"
+						alt="Two deer standing in a sunlit forest"
+						fetchpriority="high"
+					/>
+					<figcaption><span>01 / 04</span> Leave room for wonder</figcaption>
+				</figure>
+				<div class="hero-stamp" aria-hidden="true">
+					<span>TAKE</span>
+					<span>THE</span>
+					<strong>SCENIC<br />ROUTE</strong>
+				</div>
+			</section>
+
+			<section class="notes" id="field-notes" aria-labelledby="notes-heading">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">From the field journal</p>
+						<h2 id="notes-heading">A few things worth noticing</h2>
+					</div>
+					<a class="text-link" href="/blog">All field notes <span aria-hidden="true">→</span></a>
+				</div>
+				{
+					latestPosts.length > 0 ? (
+						<div class="post-grid">
+							{latestPosts.map((post, index) => (
+								<article class:list={['post-card', { 'post-card-featured': index === 0 }]}>
+									<a href={`/blog/${post.id}/`} class="post-image">
+										<img
+											src={`${post.data.heroImage ?? 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e'}?auto=format&fit=crop&w=900&q=80`}
+											alt={post.data.heroImageAlt ?? 'A quiet scene in the natural world'}
+											loading="lazy"
+										/>
+										<span class="category">{post.data.category}</span>
+									</a>
+									<div class="post-copy">
+										<p class="post-date"><FormattedDate date={post.data.pubDate} /></p>
+										<h3><a href={`/blog/${post.id}/`}>{post.data.title}</a></h3>
+										<p>{post.data.description}</p>
+										<a class="read-link" href={`/blog/${post.id}/`}>Read the story <span aria-hidden="true">↗</span></a>
+									</div>
+								</article>
+							))}
+						</div>
+					) : (
+						<p class="empty-state">The field journal is getting ready. Check back for the first note soon.</p>
+					)
+				}
+			</section>
+
+			<section class="closing-note" aria-label="A note on exploring nature">
+				<p>“The clearest way into the Universe is through a forest wilderness.”</p>
+				<span>— John Muir</span>
+			</section>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	main {
+		padding-top: 2.5rem;
+	}
+	.hero {
+		position: relative;
+		display: grid;
+		grid-template-columns: 0.95fr 1.05fr;
+		align-items: center;
+		min-height: 530px;
+		margin-bottom: 7rem;
+	}
+	.hero-copy {
+		position: relative;
+		z-index: 1;
+		padding: 2rem 0;
+	}
+	.eyebrow {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		margin: 0 0 1.1rem;
+		color: var(--accent);
+		font-size: 0.73rem;
+		font-weight: 700;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+	}
+	.eyebrow span {
+		width: 1.8rem;
+		height: 1px;
+		background: var(--sun);
+	}
+	.hero h1 {
+		max-width: 580px;
+		margin-bottom: 1.3rem;
+		font-size: clamp(3.3rem, 6.3vw, 5.7rem);
+	}
+	.hero-description {
+		max-width: 410px;
+		color: var(--muted);
+		font-size: 1.08rem;
+	}
+	.hero-actions {
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+		flex-wrap: wrap;
+		margin-top: 2rem;
+	}
+	.button {
+		display: inline-flex;
+		align-items: center;
+		gap: 1rem;
+		padding: 0.9rem 1.2rem;
+		border-radius: 3px;
+		font-size: 0.9rem;
+		font-weight: 700;
+		text-decoration: none;
+		transition: background 160ms ease, transform 160ms ease;
+	}
+	.button:hover {
+		transform: translateY(-2px);
+	}
+	.button-primary {
+		background: var(--accent-dark);
+		color: white;
+	}
+	.button-primary:hover {
+		background: var(--accent);
+		color: white;
+	}
+	.text-link,
+	.read-link {
+		color: var(--accent-dark);
+		font-size: 0.9rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+	.text-link:hover,
+	.read-link:hover {
+		color: var(--accent);
+	}
+	.hero-note {
+		margin-top: 2.5rem;
+		color: var(--muted);
+		font-size: 0.76rem;
+		letter-spacing: 0.06em;
+	}
+	.hero-image {
+		position: relative;
+		height: 510px;
+		margin: 0 -4.5rem 0 1rem;
+	}
+	.hero-image::after {
+		position: absolute;
+		inset: 0;
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		border-radius: 1rem;
+		content: '';
+		pointer-events: none;
+	}
+	.hero-image img {
+		width: 100%;
+		height: 100%;
+		border-radius: 1rem;
+		object-fit: cover;
+		object-position: center;
+	}
+	.hero-image figcaption {
+		position: absolute;
+		right: 1.2rem;
+		bottom: 1.2rem;
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+		padding: 0.7rem 0.9rem;
+		border-radius: 3px;
+		background: var(--surface);
+		color: var(--ink);
+		font-size: 0.75rem;
+	}
+	.hero-image figcaption span {
+		color: var(--accent);
+		font-size: 0.67rem;
+		font-weight: 700;
+	}
+	.hero-stamp {
+		position: absolute;
+		z-index: 1;
+		right: -2.8rem;
+		bottom: 3rem;
+		display: flex;
+		width: 125px;
+		height: 125px;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		transform: rotate(8deg);
+		border: 1px solid var(--sun);
+		border-radius: 50%;
+		background: var(--paper);
+		color: var(--accent-dark);
+		font-size: 0.6rem;
+		line-height: 1.1;
+		letter-spacing: 0.12em;
+	}
+	.hero-stamp strong {
+		margin-top: 0.3rem;
+		font-size: 0.86rem;
+		text-align: center;
+	}
+	.notes {
+		padding-top: 1rem;
+	}
+	.section-heading {
+		display: flex;
+		align-items: end;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 2rem;
+	}
+	.section-heading .eyebrow {
+		margin-bottom: 0.6rem;
+	}
+	.section-heading h2 {
+		margin: 0;
+		font-size: clamp(2rem, 4vw, 3.2rem);
+	}
+	.section-heading > .text-link {
+		margin-bottom: 0.5rem;
+		white-space: nowrap;
+	}
+	.post-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1.5rem;
+	}
+	.post-card {
+		overflow: hidden;
+		border: 1px solid var(--line);
+		border-radius: 0.8rem;
+		background: var(--surface);
+	}
+	.post-image {
+		position: relative;
+		display: block;
+		height: 215px;
+		overflow: hidden;
+	}
+	.post-image img {
+		width: 100%;
+		height: 100%;
+		border-radius: 0;
+		object-fit: cover;
+		transition: transform 400ms ease;
+	}
+	.post-card:hover .post-image img {
+		transform: scale(1.04);
+	}
+	.category {
+		position: absolute;
+		bottom: 0.9rem;
+		left: 0.9rem;
+		padding: 0.35rem 0.65rem;
+		border-radius: 2px;
+		background: var(--paper);
+		color: var(--accent-dark);
+		font-size: 0.69rem;
+		font-weight: 700;
+	}
+	.post-copy {
+		padding: 1.2rem 1.3rem 1.4rem;
+	}
+	.post-date {
+		margin: 0 0 0.4rem;
+		color: var(--muted);
+		font-size: 0.75rem;
+	}
+	.post-copy h3 {
+		margin: 0 0 0.6rem;
+		font-size: 1.4rem;
+	}
+	.post-copy h3 a {
+		color: var(--ink);
+		text-decoration: none;
+	}
+	.post-copy h3 a:hover {
+		color: var(--accent);
+	}
+	.post-copy > p:not(.post-date) {
+		margin: 0 0 1rem;
+		color: var(--muted);
+		font-size: 0.88rem;
+	}
+	.read-link {
+		font-size: 0.8rem;
+	}
+	.empty-state {
+		padding: 2rem;
+		border: 1px dashed var(--line);
+		border-radius: 0.8rem;
+		color: var(--muted);
+		text-align: center;
+	}
+	.closing-note {
+		margin-top: 7rem;
+		padding: 3rem 1rem;
+		border-top: 1px solid var(--line);
+		text-align: center;
+	}
+	.closing-note p {
+		max-width: 700px;
+		margin: 0 auto 0.8rem;
+		color: var(--accent-dark);
+		font-family: Georgia, serif;
+		font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+		font-style: italic;
+		line-height: 1.35;
+	}
+	.closing-note span {
+		color: var(--muted);
+		font-size: 0.8rem;
+	}
+	@media (max-width: 900px) {
+		.hero {
+			min-height: 430px;
+			margin-bottom: 5rem;
+		}
+		.hero-image {
+			height: 430px;
+			margin-right: -2rem;
+		}
+		.hero-stamp {
+			right: -1rem;
+			bottom: 1.5rem;
+			width: 105px;
+			height: 105px;
+		}
+		.post-grid {
+			gap: 1rem;
+		}
+		.post-image {
+			height: 180px;
+		}
+	}
+	@media (max-width: 680px) {
+		main {
+			padding-top: 1.2rem;
+		}
+		.hero {
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
+			margin-bottom: 4rem;
+		}
+		.hero-copy {
+			padding: 1.5rem 0 0;
+		}
+		.hero h1 {
+			max-width: 520px;
+			font-size: clamp(3rem, 13vw, 4.5rem);
+		}
+		.hero-image {
+			height: 340px;
+			margin: 0;
+		}
+		.hero-stamp {
+			right: 0.6rem;
+			bottom: -1.5rem;
+		}
+		.hero-note {
+			margin-top: 1.4rem;
+		}
+		.post-grid {
+			grid-template-columns: 1fr;
+		}
+		.post-image {
+			height: 240px;
+		}
+		.section-heading {
+			align-items: start;
+			flex-direction: column;
+		}
+		.closing-note {
+			margin-top: 4rem;
+		}
+	}
+</style>

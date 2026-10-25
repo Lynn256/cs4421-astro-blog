@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
@@ -15,100 +14,160 @@ const posts = (await getCollection('blog')).sort(
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
+		<BaseHead title={`Field Notes | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
 	</head>
 	<body>
 		<Header />
 		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
+			<header class="page-intro">
+				<p class="eyebrow">Stories for the curious</p>
+				<h1>Field notes</h1>
+				<p>Wildlife encounters, thoughtful ways to explore, and reminders to look a little closer.</p>
+			</header>
+			{
+				posts.length > 0 ? (
+					<section aria-label="All field notes" class="post-grid">
+						{posts.map((post) => (
+							<article class="post-card">
+								<a class="post-image" href={`/blog/${post.id}/`}>
+									<img
+										src={`${post.data.heroImage ?? 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e'}?auto=format&fit=crop&w=900&q=80`}
+										alt={post.data.heroImageAlt ?? 'A quiet scene in the natural world'}
+										loading="lazy"
+									/>
+									<span class="category">{post.data.category}</span>
 								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
+								<div class="post-copy">
+									<p class="post-date"><FormattedDate date={post.data.pubDate} /></p>
+									<h2><a href={`/blog/${post.id}/`}>{post.data.title}</a></h2>
+									<p class="description">{post.data.description}</p>
+									<a class="read-link" href={`/blog/${post.id}/`}>Read the story <span aria-hidden="true">↗</span></a>
+								</div>
+							</article>
+						))}
+					</section>
+				) : (
+					<p class="empty-state">The field journal is getting ready. Check back for the first note soon.</p>
+				)
+			}
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.page-intro {
+		max-width: 680px;
+		margin: 0 auto 3.5rem;
+		text-align: center;
+	}
+	.eyebrow {
+		margin: 0 0 0.8rem;
+		color: var(--accent);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+	}
+	.page-intro h1 {
+		margin-bottom: 0.8rem;
+	}
+	.page-intro > p:last-child {
+		margin: 0;
+		color: var(--muted);
+	}
+	.post-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1.5rem;
+	}
+	.post-card {
+		overflow: hidden;
+		border: 1px solid var(--line);
+		border-radius: 0.8rem;
+		background: var(--surface);
+	}
+	.post-image {
+		position: relative;
+		display: block;
+		height: 225px;
+		overflow: hidden;
+	}
+	.post-image img {
+		width: 100%;
+		height: 100%;
+		border-radius: 0;
+		object-fit: cover;
+		transition: transform 400ms ease;
+	}
+	.post-card:hover .post-image img {
+		transform: scale(1.04);
+	}
+	.category {
+		position: absolute;
+		bottom: 0.9rem;
+		left: 0.9rem;
+		padding: 0.35rem 0.65rem;
+		border-radius: 2px;
+		background: var(--paper);
+		color: var(--accent-dark);
+		font-size: 0.69rem;
+		font-weight: 700;
+	}
+	.post-copy {
+		padding: 1.2rem 1.3rem 1.4rem;
+	}
+	.post-date {
+		margin: 0 0 0.4rem;
+		color: var(--muted);
+		font-size: 0.75rem;
+	}
+	.post-copy h2 {
+		margin: 0 0 0.6rem;
+		font-size: 1.45rem;
+	}
+	.post-copy h2 a {
+		color: var(--ink);
+		text-decoration: none;
+	}
+	.post-copy h2 a:hover {
+		color: var(--accent);
+	}
+	.description {
+		margin: 0 0 1rem;
+		color: var(--muted);
+		font-size: 0.88rem;
+	}
+	.read-link {
+		color: var(--accent-dark);
+		font-size: 0.8rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+	.read-link:hover {
+		color: var(--accent);
+	}
+	.empty-state {
+		padding: 2rem;
+		border: 1px dashed var(--line);
+		border-radius: 0.8rem;
+		color: var(--muted);
+		text-align: center;
+	}
+	@media (max-width: 850px) {
+		.post-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+	@media (max-width: 560px) {
+		.page-intro {
+			margin-bottom: 2.5rem;
+		}
+		.post-grid {
+			grid-template-columns: 1fr;
+		}
+		.post-image {
+			height: 240px;
+		}
+	}
+</style>

@@ -1,64 +1,182 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import Layout from '../layouts/BlogPost.astro';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
 ---
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	author="Lynn Nalwoga"
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
->
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`About | ${SITE_TITLE}`}
+			description="Meet Lynn and discover the spirit behind Wild Notes, a journal for noticing and caring for the natural world."
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="about-hero">
+				<div class="about-copy">
+					<p class="eyebrow">A little about this place</p>
+					<h1>Curiosity is a wonderful way to begin.</h1>
+					<p class="lead">
+						Hello, I'm Lynn. Wild Notes is my corner of the internet for celebrating the nature
+						and wildlife that make our world feel a little more alive.
+					</p>
+					<p>
+						Here you'll find gentle field notes, wildlife stories, and practical ideas for
+						exploring with a little more care. You don't need to travel far or know every name:
+						sometimes it starts with a bird at the window, a trail after rain, or one question
+						you can't stop wondering about.
+					</p>
+					<a class="button" href="/blog">Wander through the field notes <span aria-hidden="true">↗</span></a>
+				</div>
+				<figure>
+					<img
+						src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1000&q=85"
+						alt="Sunlight filtering through a quiet green forest"
+						fetchpriority="high"
+					/>
+					<figcaption>Take only memories. Leave room for wonder.</figcaption>
+				</figure>
+			</section>
+			<section class="values" aria-labelledby="values-heading">
+				<p class="eyebrow">A few guiding ideas</p>
+				<h2 id="values-heading">Go gently. Notice more.</h2>
+				<div class="value-grid">
+					<article>
+						<span aria-hidden="true">01</span>
+						<h3>Be curious</h3>
+						<p>Pay attention to the small details. The best discoveries rarely need a map.</p>
+					</article>
+					<article>
+						<span aria-hidden="true">02</span>
+						<h3>Leave it wild</h3>
+						<p>Watch from a respectful distance and leave habitats just as you found them.</p>
+					</article>
+					<article>
+						<span aria-hidden="true">03</span>
+						<h3>Share the wonder</h3>
+						<p>Every thoughtful story can bring someone a little closer to the natural world.</p>
+					</article>
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
-
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
-
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
-
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
-</Layout>
+<style>
+	.about-hero {
+		display: grid;
+		grid-template-columns: 1fr 0.85fr;
+		align-items: center;
+		gap: 4rem;
+	}
+	.about-copy h1 {
+		margin-bottom: 1.2rem;
+		font-size: clamp(2.8rem, 5vw, 4.2rem);
+	}
+	.eyebrow {
+		margin: 0 0 0.8rem;
+		color: var(--accent);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+	}
+	.lead {
+		color: var(--accent-dark);
+		font-size: 1.13rem;
+	}
+	.about-copy > p:not(.eyebrow, .lead) {
+		color: var(--muted);
+	}
+	figure {
+		position: relative;
+		margin: 0;
+	}
+	figure img {
+		display: block;
+		width: 100%;
+		height: 500px;
+		object-fit: cover;
+	}
+	figcaption {
+		position: absolute;
+		right: 1rem;
+		bottom: 1rem;
+		left: 1rem;
+		padding: 0.75rem 1rem;
+		border-radius: 3px;
+		background: var(--surface);
+		color: var(--accent-dark);
+		font-size: 0.78rem;
+	}
+	.button {
+		display: inline-flex;
+		align-items: center;
+		gap: 1rem;
+		margin-top: 0.8rem;
+		padding: 0.9rem 1.2rem;
+		border-radius: 3px;
+		background: var(--accent-dark);
+		color: white;
+		font-size: 0.9rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+	.button:hover {
+		background: var(--accent);
+		color: white;
+	}
+	.values {
+		margin-top: 7rem;
+		padding-top: 3rem;
+		border-top: 1px solid var(--line);
+	}
+	.values h2 {
+		margin-bottom: 2rem;
+	}
+	.value-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 2rem;
+	}
+	.value-grid article {
+		padding-top: 1.2rem;
+		border-top: 1px solid var(--line);
+	}
+	.value-grid article > span {
+		color: var(--sun);
+		font-size: 0.8rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+	}
+	.value-grid h3 {
+		margin: 0.65rem 0 0.4rem;
+		font-size: 1.35rem;
+	}
+	.value-grid p {
+		margin: 0;
+		color: var(--muted);
+		font-size: 0.92rem;
+	}
+	@media (max-width: 760px) {
+		.about-hero {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+		figure img {
+			height: 360px;
+		}
+		.values {
+			margin-top: 4.5rem;
+		}
+		.value-grid {
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
+		}
+	}
+</style>
