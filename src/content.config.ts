@@ -6,32 +6,32 @@ const blog = defineCollection({
 	// Load Markdown and MDX files in the `src/content/blog/` directory.
 	loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
 	// Type-check frontmatter using a schema
-	schema: ({ image }) =>
-		z.object({
-			title: z.string(),
-			description: z.string(),
-			author: z.string(),
-			// Transform string to Date object
-			pubDate: z.coerce.date(),
-			updatedDate: z.coerce.date().optional(),
-			heroImage: z.optional(image()),
-		}),
+	schema: z.object({
+		title: z.string(),
+		description: z.string(),
+		author: z.string(),
+		pubDate: z.coerce.date(),
+		updatedDate: z.coerce.date().optional(),
+		heroImage: z.url().optional(),
+		heroImageAlt: z.string().optional(),
+		category: z.string().default('Field notes'),
+	}),
 });
 
 const authors = defineCollection({
-		loader: glob({ base: './src/content/authors', pattern: '**/*.md' }),
-		schema: z.object({
-			name: z.string(),
-			avatar: z.string(),
-			bio: z.string(),
-			social: z
-				.object({
-					website: z.string().url().optional(),
-					github: z.string().url().optional(),
-					linkedin: z.string().url().optional(),
-				})
-				.default({}),
-		}),
-	});
+	loader: glob({ base: './src/content/authors', pattern: '**/*.md' }),
+	schema: z.object({
+		name: z.string(),
+		avatar: z.string(),
+		bio: z.string(),
+		social: z
+			.object({
+				website: z.url().optional(),
+				github: z.url().optional(),
+				linkedin: z.url().optional(),
+			})
+			.default({}),
+	}),
+});
 
 export const collections = { blog, authors };
