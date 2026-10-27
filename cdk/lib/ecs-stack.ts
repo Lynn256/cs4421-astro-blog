@@ -77,7 +77,7 @@ export class EcsStack extends cdk.Stack {
     service.targetGroup.configureHealthCheck({
       path: '/api/health/ready',
       healthyThresholdCount: 2,
-      unhealthyThresholdCount: 3,
+      unhealthyThresholdCount: 3, 
     });
 
     new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
