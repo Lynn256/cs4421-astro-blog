@@ -25,7 +25,11 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ecrstack-astrorepository95765926-r5adjkdnqexq
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: latest
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Force ECS Deployment
+        run: |
+          aws ecs update-service --cluster EcsStack-EcsDefaultClusterMnL3mNNYNVpc18E0451A-J0uEk5uaIou1 --service EcsStack-EcsDefaultClusterMnL3mNNYNVpc18E0451A-J0uEk5uaIou1/EcsStack-AstroService03ADA2BA-vsAsygcTiueL --force-new-deployment --region us-east-1
